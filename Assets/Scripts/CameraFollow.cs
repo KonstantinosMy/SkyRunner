@@ -4,14 +4,15 @@ public class CameraFollow : MonoBehaviour {
 
     [SerializeField] Transform player;
     Vector3 offset;
-
+    public CameraShake camera;
 	private void Start () {
         offset = transform.position - player.position;
 	}
     
 	private void Update () {
-        Vector3 targetPos = player.position + offset;
-        targetPos.x = 0;
-        transform.position = targetPos;
+         Vector3 targetPos = player.position + offset;
+            targetPos.x = 0;
+            transform.position = targetPos;
+        
 	}
 }

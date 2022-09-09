@@ -20,6 +20,7 @@ public class Timer : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI secondSecond;
 
+    public bool timerIsActive;
     //Use this for a single text object
     //[SerializeField]
     //private TextMeshProUGUI timerText;
@@ -30,6 +31,12 @@ public class Timer : MonoBehaviour {
 
     private void Start() {
         ResetTimer();
+       
+    }
+
+    private void Awake()
+    {
+        timerIsActive = true;
     }
 
     private void ResetTimer() {
@@ -42,15 +49,25 @@ public class Timer : MonoBehaviour {
     }
 
     void Update() {
-        if (countDown && timer > 0) {
-            timer -= Time.deltaTime;
-            UpdateTimerDisplay(timer);
-        } else if (!countDown && timer < timerDuration) {
-            timer += Time.deltaTime;
-            UpdateTimerDisplay(timer);
-        } else {
-            FlashTimer();
+
+        if (timerIsActive)
+        {
+            if (countDown && timer > 0)
+            {
+                timer -= Time.deltaTime;
+                UpdateTimerDisplay(timer);
+            }
+            else if (!countDown && timer < timerDuration)
+            {
+                timer += Time.deltaTime;
+                UpdateTimerDisplay(timer);
+            }
+            else
+            {
+                FlashTimer();
+            }
         }
+       
     }
 
     private void UpdateTimerDisplay(float time) {
