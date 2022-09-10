@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -26,11 +27,18 @@ public class PlayerMovement : MonoBehaviour {
     public Image redImage;
 
     public AudioSource klonk;
+
+    public float currentTime;
+    public TextMeshProUGUI bestTime;
+    public Timer clock;
     private void Start()
     {
+        Time.timeScale = 1;
         deathMenu.SetActive(false);
         InvokeRepeating("IncreasePlayerSpeed", 5f, 10f);
         damageTaken = 0;
+
+        bestTime.text = "Best Time Alive: " + PlayerPrefs.GetInt("BestTime", 0).ToString() + " seconds";
 
     }
     private void FixedUpdate ()
@@ -48,7 +56,9 @@ public class PlayerMovement : MonoBehaviour {
         if (transform.position.y < -5) {
             Die();
         }
-	}
+
+        currentTime = clock.GetComponent<Timer>().timer;
+    }
 
 
     public void Die ()
@@ -56,6 +66,14 @@ public class PlayerMovement : MonoBehaviour {
         alive = false;
         deathMenu.SetActive(true);
         gameTimer.timerIsActive = false;
+
+        if (currentTime > PlayerPrefs.GetInt("BestTime", 0))
+        {
+            Debug.Log(Mathf.RoundToInt(currentTime));
+            PlayerPrefs.SetInt("BestTime", Mathf.RoundToInt(currentTime));
+            bestTime.text = "Best Time Alive: " + Mathf.RoundToInt(currentTime).ToString() + " seconds";
+        }
+
         backroundMusic.Stop();
     }
 
@@ -107,6 +125,20 @@ public class PlayerMovement : MonoBehaviour {
     public void MainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void PauseMenu()
+    {
+        Time.timeScale = 0;
+        deathMenu.SetActive(true);
+        backroundMusic.Stop();
+    }
+
+    public void ResumeMenu()
+    {
+        Time.timeScale = 1;
+        deathMenu.SetActive(false);
+        backroundMusic.Play();
     }
 
     public void QuitGame()

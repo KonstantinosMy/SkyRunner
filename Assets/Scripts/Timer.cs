@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour {
     [SerializeField]
     private bool countDown = true;
 
-    private float timer;
+    public float timer;
     [SerializeField]
     private TextMeshProUGUI firstMinute;
     [SerializeField]

@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour {
 
     // [SerializeField] Text scoreText;
     public TextMeshProUGUI scoreTxt;
-    [SerializeField] PlayerMovement playerMovement;
+    public PlayerMovement playerMovement;
+
+    private int counter;
   
     public void IncrementScore ()
     {
@@ -23,7 +25,7 @@ public class GameManager : MonoBehaviour {
         if(score > PlayerPrefs.GetInt("HighScore", 0))
         {
             PlayerPrefs.SetInt("HighScore", score);
-            HighestScore.text = "HIGHSCORE: " + score.ToString();
+            HighestScore.text = "HIGHSCORE: " + score.ToString() + " coins";
         }
 
 
@@ -42,7 +44,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start () {
-        HighestScore.text = "HIGHSCORE: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
+        HighestScore.text = "HIGHSCORE: " + PlayerPrefs.GetInt("HighScore", 0).ToString() + " coins";
+        counter = 2;
 	}
 
 	private void Update () {
@@ -51,5 +54,17 @@ public class GameManager : MonoBehaviour {
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-	}
+        
+        if (Input.GetKeyDown(KeyCode.Escape) && counter%2==0)
+        {
+            playerMovement.PauseMenu();
+            counter++;
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && counter % 2 != 0)
+        {
+            playerMovement.ResumeMenu();
+            counter++;
+        }
+
+    }
 }
