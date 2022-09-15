@@ -1,2 +1,2 @@
 # SkyRunner
- A rapid prototype game. Speed increases exponentially with time.
+An endless runner prototype game made with Unity.
